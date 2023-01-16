@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server",
+  "scripts": {
+    "dev": "tsx watch ./src/server",
+    "build": "tsc && resolve-tspaths",
+    "start": "node ./dist/server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev"
+  },
+  "author": "Gabriel VS Frasão <gabrielvitor.frasao@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "eslint-config-custom": "*",
+    "prisma": "^4.8.1",
+    "resolve-tspaths": "^0.8.3",
+    "tsconfig": "*",
+    "tsx": "^3.12.2",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "@fastify/jwt": "^6.5.0",
+    "@fastify/oauth2": "^7.0.0",
+    "@prisma/client": "^4.8.1",
+    "axios": "^1.2.2",
+    "fastify": "^4.11.0",
+    "stripe": "^11.6.0",
+    "zod": "^3.20.2",
+    "zod-schemas": "*"
+  }
+}
