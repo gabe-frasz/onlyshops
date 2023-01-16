@@ -1,15 +1,36 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": [],
+  "globalEnv": [
+    "NODE_ENV",
+    "DOMAIN_URL",
+    "PORT",
+    "CORS_ORIGIN",
+    "JWT_SECRET",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_SECRET",
+    "STRIPE_API_KEY"
+  ],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^db:generate", "^build"],
+      "outputs": ["dist/**", ".next/**"]
+    },
+    "build:server": {
+      "dependsOn": ["^db:generate", "^build"],
       "outputs": ["dist/**", ".next/**"]
     },
     "lint": {
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["^db:generate"],
+      "cache": false
+    },
+    "dev:server": {
+      "dependsOn": ["^db:generate"],
+      "cache": false
+    },
+    "db:generate": {
       "cache": false
     }
   }

@@ -7,8 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "dev:server": "turbo run dev --filter=server",
+    "dev:web": "turbo run dev --filter=web",
+    "build": "turbo run build",
+    "build:server": "turbo run build --filter=server",
+    "build:web": "turbo run build --filter=web",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
