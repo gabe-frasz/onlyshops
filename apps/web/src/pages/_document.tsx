@@ -1,11 +1,24 @@
+import { ColorModeScript } from "@chakra-ui/react";
 import { Head, Html, Main, NextScript } from "next/document";
 import Script from "next/script";
+import { theme } from "./_app";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
+        <link
+          href="https://onlyshops.vercel.app/"
+          rel="alternate"
+          hrefLang="en"
+        />
+        <link
+          href="https://onlyshops.vercel.app/pt-BR/"
+          rel="alternate"
+          hrefLang="pt-BR"
+        />
 
         <link
           href="/favicon.ico"
@@ -22,10 +35,6 @@ export default function Document() {
         />
 
         {/*
-          // if using nextjs locale feature, add this
-          // docs: https://developers.google.com/search/docs/advanced/crawling/localized-versions?visit_id=637997374871324908-57850501&rd=1#html
-          <link rel="alternate" hreflang="lang_code" href="url_of_page" />
-
           <meta name="application-name" content="Next.js template with bash scripts" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -75,7 +84,9 @@ export default function Document() {
         */}
       </Head>
 
-      <body>
+      <body className="min-h-screen overflow-x-hidden bg-zinc-900 text-zinc-100">
+        <ColorModeScript initialColorMode={theme.initialColorMode} />
+
         <Main />
 
         <NextScript />

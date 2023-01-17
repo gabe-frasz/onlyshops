@@ -4,7 +4,7 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   i18n: {
-    locales: ["en"],
+    locales: ["en", "pt-BR"],
     defaultLocale: "en",
   },
 };
