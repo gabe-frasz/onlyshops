@@ -1,19 +1,27 @@
-import { authenticate } from "@/plugins";
 import { FastifyInstance } from "fastify";
-import { Stripe } from "stripe";
 import { createCheckoutSessionSchema } from "zod-schemas";
 
-const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
-  apiVersion: "2022-11-15",
-});
+import { prisma, stripe } from "@/libs";
+import { authenticate } from "@/plugins";
 
 export async function checkoutRoutes(fastify: FastifyInstance) {
   // * Create checkout session
-  fastify.post("/checkout", { onRequest: [authenticate] }, async (req, res) => {
+  fastify.post("/", { onRequest: [authenticate] }, async (req, res) => {
     const parsedBody = createCheckoutSessionSchema.safeParse(req.body);
-    if (!parsedBody.success)
-      return res.status(400).send({ error: "Invalid body" });
+    if (!parsedBody.success) {
+      return res.status(400).send({
+        status: "400 Bad request",
+        message: parsedBody.error.format(),
+      });
+    }
     const { items } = parsedBody.data;
+
+    const user = await prisma.user.findUnique({
+      select: { email: true },
+      where: { id: req.user.sub },
+    });
+
+    if (!user) return res.status(404).send({ error: "User not found" });
 
     const session = await stripe.checkout.sessions.create({
       line_items: items.map((item) => ({
@@ -29,8 +37,10 @@ export async function checkoutRoutes(fastify: FastifyInstance) {
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: `${process.env.CORS_ORIGIN}/success`,
-      cancel_url: `${process.env.CORS_ORIGIN}?canceled=true`,
+      success_url: `${process.env.WEB_APP_ORIGIN}/success`,
+      cancel_url: `${process.env.WEB_APP_ORIGIN}?canceled=true`,
+      customer_email: user.email,
+      customer: req.user.sub,
     });
 
     res.redirect(303, session.url!);
