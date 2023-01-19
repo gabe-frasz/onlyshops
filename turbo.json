@@ -4,11 +4,16 @@
     "NODE_ENV",
     "DOMAIN_URL",
     "PORT",
-    "CORS_ORIGIN",
+    "WEB_APP_ORIGIN",
     "JWT_SECRET",
     "GITHUB_CLIENT_ID",
     "GITHUB_SECRET",
-    "STRIPE_API_KEY"
+    "STRIPE_API_KEY",
+    "STRIPE_ENDPOINT_SECRET",
+    "MAIL_HOST",
+    "MAIL_PORT",
+    "MAIL_USER",
+    "MAIL_PASSWORD"
   ],
   "pipeline": {
     "build": {
@@ -19,9 +24,6 @@
       "dependsOn": ["^db:generate", "^build"],
       "outputs": ["dist/**", ".next/**"]
     },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
       "dependsOn": ["^db:generate"],
       "cache": false
@@ -29,6 +31,9 @@
     "dev:server": {
       "dependsOn": ["^db:generate"],
       "cache": false
+    },
+    "lint": {
+      "outputs": []
     },
     "db:generate": {
       "cache": false
