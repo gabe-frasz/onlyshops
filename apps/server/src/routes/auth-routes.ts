@@ -1,7 +1,3 @@
-import type { OAuth2Provider } from "@/@types";
-import { prisma } from "@/libs";
-import { authenticate } from "@/plugins";
-import { getUserInfoFromProvider } from "@/utils";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { FastifyInstance } from "fastify";
@@ -10,6 +6,11 @@ import {
   createUserBodySchema,
   CreateUserResponse,
 } from "zod-schemas";
+
+import type { OAuth2Provider } from "@/@types";
+import { prisma } from "@/libs";
+import { authenticate } from "@/plugins";
+import { getUserInfoFromProvider } from "@/utils";
 
 export async function authRoutes(fastify: FastifyInstance) {
   // * Handle user login
@@ -29,7 +30,11 @@ export async function authRoutes(fastify: FastifyInstance) {
       `${process.env.DOMAIN_URL}/users`,
       {
         provider,
-        ...userInfo,
+        providerId: userInfo.id,
+        id: undefined,
+        name: userInfo.name,
+        email: userInfo.email,
+        avatarUrl: userInfo.avatarUrl,
       } as CreateUserBody
     );
 
@@ -45,14 +50,14 @@ export async function authRoutes(fastify: FastifyInstance) {
     const parsedBody = createUserBodySchema.safeParse(req.body);
     if (!parsedBody.success)
       return res.status(400).send({ error: "Invalid body" });
-    const { provider, id, name, email, avatarUrl } = parsedBody.data;
+    const { provider, providerId, name, email, avatarUrl } = parsedBody.data;
 
     let user: User | null = null;
 
     switch (provider) {
       case "github":
         user = await prisma.user.findUnique({
-          where: { githubId: id },
+          where: { githubId: providerId },
         });
         break;
 
@@ -61,20 +66,28 @@ export async function authRoutes(fastify: FastifyInstance) {
     }
 
     if (!user) {
-      try {
+      user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (user) {
+        await prisma.user.update({
+          data: {
+            githubId: provider === "github" ? providerId : undefined,
+          },
+          where: { id: user.id },
+        });
+      }
+
+      if (!user) {
         user = await prisma.user.create({
           data: {
-            githubId: id,
+            githubId: provider === "github" ? providerId : undefined,
             name,
             email,
             avatarUrl,
           },
         });
-      } catch {
-        return res.status(500).send({
-          token: null,
-          error: "User alredy exists. Login with another provider",
-        } as CreateUserResponse);
       }
     }
 
