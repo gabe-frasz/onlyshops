@@ -22,23 +22,8 @@ export const checkoutSessionCompletedSchema = z.object({
 });
 
 export const createUserBodySchema = z.object({
-  provider: z.enum(["github"]),
-  providerId: z.coerce.string(),
   name: z.string(),
   email: z.string().email(),
-  avatarUrl: z.string().url().nullable(),
+  avatarUrl: z.string().url().optional(),
 });
 export type CreateUserBody = z.infer<typeof createUserBodySchema>;
-
-export const createUserResponseSchema = z.object({
-  token: z.string().nullable(),
-  error: z.string().nullable(),
-});
-export type CreateUserResponse = z.infer<typeof createUserResponseSchema>;
-
-export const githubUserInfoResponseSchema = z.object({
-  id: z.coerce.string(),
-  name: z.string(),
-  email: z.string().email(),
-  avatar_url: z.string().url().nullish(),
-});
