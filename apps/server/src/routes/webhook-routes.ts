@@ -8,7 +8,8 @@ import { stripe } from "@/libs";
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
 export async function webhookRoutes(fastify: FastifyInstance) {
-  // * Handle stripe webhooks
+  /** @POST //* Handle stripe webhooks */
+  /** @Public */
   // TODO: finish email content
   fastify.post("/stripe", { config: { rawBody: true } }, async (req, res) => {
     const signature = req.headers["stripe-signature"];

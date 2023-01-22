@@ -5,7 +5,8 @@ import { prisma, stripe } from "@/libs";
 import { authenticate } from "@/plugins";
 
 export async function checkoutRoutes(fastify: FastifyInstance) {
-  // * Create checkout session
+  /** @POST // * Create checkout session */
+  /** @Public */
   fastify.post("/", { onRequest: [authenticate] }, async (req, res) => {
     const parsedBody = createCheckoutSessionSchema.safeParse(req.body);
     if (!parsedBody.success) {
