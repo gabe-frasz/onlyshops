@@ -8,9 +8,9 @@ interface PageTransitionProps {
 export const PageTransition = ({ children }: PageTransitionProps) => {
   return (
     <motion.div
-      initial={{ filter: "blur(10px)" }}
+      initial={{ filter: "blur(50px)" }}
       animate={{ filter: "blur(0px)" }}
-      exit={{ filter: "blur(10px)" }}
+      exit={{ filter: "blur(50px)" }}
       transition={{
         type: "spring",
         stiffness: 260,
