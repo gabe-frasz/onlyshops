@@ -1,0 +1,15 @@
+query ProductBySlug($locale: Locale!, $slug: String!) {
+  product(locales: [$locale], where: { slug: $slug }) {
+    id
+    name
+    description
+    price
+    images {
+      url
+    }
+    inStock
+    categories {
+      name
+    }
+  }
+}

@@ -1,0 +1,16 @@
+query Products($locale: Locale!) {
+  products(locales: [$locale]) {
+    id
+    slug
+    name
+    description
+    price
+    images {
+      url
+    }
+    inStock
+    categories {
+      name
+    }
+  }
+}
