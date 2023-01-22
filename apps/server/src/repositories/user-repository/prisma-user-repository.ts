@@ -1,15 +1,13 @@
-import { OAuth2Provider } from "@/@types";
 import { prisma } from "@/libs";
 import { CreateUserData, UserRepository } from "./contract";
 
 export class PrismaUserRepository implements UserRepository {
   async create(data: CreateUserData) {
-    await prisma.user.create({
+    return await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
         avatarUrl: data.avatarUrl,
-        githubId: data.githubId,
       },
     });
   }
@@ -20,16 +18,10 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async getUserByProviderId(provider: OAuth2Provider, providerId: string) {
-    switch (provider) {
-      case "github":
-        return await prisma.user.findUnique({
-          where: { githubId: providerId },
-        });
-
-      default:
-        return null;
-    }
+  async getUserByEmail(email: string) {
+    return await prisma.user.findUnique({
+      where: { email },
+    });
   }
 
   async getEmail(userId: string) {
