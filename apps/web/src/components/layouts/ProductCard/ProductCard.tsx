@@ -4,9 +4,10 @@ import Link from "next/link";
 
 interface ProductCartProps {
   product: {
+    id?: string;
     slug: string;
     name: string;
-    image?: string;
+    image?: string | null;
     price: number;
     inStock: boolean;
     categories: string[];
@@ -19,7 +20,7 @@ export const ProductCard = ({ product }: ProductCartProps) => {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="relative w-full max-w-[300px] overflow-hidden rounded-md border-2 border-violet-400 font-semibold shadow-md transition-all duration-300 hover:scale-[1.01] hover:shadow-xl dark:border-violet-200 dark:bg-zinc-800 dark:text-violet-50"
+      className="relative w-72 max-w-full overflow-hidden rounded-md border-2 border-violet-400 font-semibold shadow-md transition-all duration-300 hover:scale-[1.01] hover:shadow-xl dark:border-violet-200 dark:bg-zinc-800 dark:text-violet-50 md:w-80"
     >
       <Image
         src={product.image ?? "https://github.com/classmate.png"}
@@ -53,7 +54,7 @@ export const ProductCard = ({ product }: ProductCartProps) => {
 
       {product.inStock ? null : (
         <div className="absolute top-0 right-0 left-0 flex justify-center bg-red-500 py-3 font-bold uppercase text-white">
-          Sold Out
+          {isInEnglish ? "Sold Out" : "Esgotado"}
         </div>
       )}
     </Link>

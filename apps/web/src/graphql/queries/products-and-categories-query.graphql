@@ -1,4 +1,4 @@
-query Products($locale: Locale!) {
+query ProductsAndCategories($locale: Locale!) {
   products(locales: [$locale]) {
     id
     slug
@@ -12,5 +12,9 @@ query Products($locale: Locale!) {
     categories {
       name
     }
+  }
+
+  categories(locales: [$locale]) {
+    name
   }
 }

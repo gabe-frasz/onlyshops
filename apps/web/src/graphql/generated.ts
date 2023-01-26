@@ -2041,7 +2041,6 @@ export type ProductCreateInput = {
   localizations?: InputMaybe<ProductCreateLocalizationsInput>;
   /** name input for default locale (en) */
   name: Scalars["String"];
-  /** price input for default locale (en) */
   price: Scalars["Float"];
   slug: Scalars["String"];
   updatedAt?: InputMaybe<Scalars["DateTime"]>;
@@ -2051,7 +2050,6 @@ export type ProductCreateLocalizationDataInput = {
   createdAt?: InputMaybe<Scalars["DateTime"]>;
   description: Scalars["String"];
   name: Scalars["String"];
-  price: Scalars["Float"];
   updatedAt?: InputMaybe<Scalars["DateTime"]>;
 };
 
@@ -2146,6 +2144,21 @@ export type ProductManyWhereInput = {
   inStock?: InputMaybe<Scalars["Boolean"]>;
   /** All values that are not equal to given value. */
   inStock_not?: InputMaybe<Scalars["Boolean"]>;
+  price?: InputMaybe<Scalars["Float"]>;
+  /** All values greater than the given value. */
+  price_gt?: InputMaybe<Scalars["Float"]>;
+  /** All values greater than or equal the given value. */
+  price_gte?: InputMaybe<Scalars["Float"]>;
+  /** All values that are contained in given list. */
+  price_in?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
+  /** All values less than the given value. */
+  price_lt?: InputMaybe<Scalars["Float"]>;
+  /** All values less than or equal the given value. */
+  price_lte?: InputMaybe<Scalars["Float"]>;
+  /** All values that are not equal to given value. */
+  price_not?: InputMaybe<Scalars["Float"]>;
+  /** All values that are not contained in given list. */
+  price_not_in?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
   publishedAt?: InputMaybe<Scalars["DateTime"]>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars["DateTime"]>;
@@ -2233,7 +2246,6 @@ export type ProductUpdateInput = {
   localizations?: InputMaybe<ProductUpdateLocalizationsInput>;
   /** name input for default locale (en) */
   name?: InputMaybe<Scalars["String"]>;
-  /** price input for default locale (en) */
   price?: InputMaybe<Scalars["Float"]>;
   slug?: InputMaybe<Scalars["String"]>;
 };
@@ -2241,7 +2253,6 @@ export type ProductUpdateInput = {
 export type ProductUpdateLocalizationDataInput = {
   description?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
-  price?: InputMaybe<Scalars["Float"]>;
 };
 
 export type ProductUpdateLocalizationInput = {
@@ -2282,13 +2293,11 @@ export type ProductUpdateManyInput = {
   inStock?: InputMaybe<Scalars["Boolean"]>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<ProductUpdateManyLocalizationsInput>;
-  /** price input for default locale (en) */
   price?: InputMaybe<Scalars["Float"]>;
 };
 
 export type ProductUpdateManyLocalizationDataInput = {
   description?: InputMaybe<Scalars["String"]>;
-  price?: InputMaybe<Scalars["Float"]>;
 };
 
 export type ProductUpdateManyLocalizationInput = {
@@ -4334,6 +4343,26 @@ export type ProductBySlugQuery = {
   } | null;
 };
 
+export type ProductsAndCategoriesQueryVariables = Exact<{
+  locale: Locale;
+}>;
+
+export type ProductsAndCategoriesQuery = {
+  __typename?: "Query";
+  products: Array<{
+    __typename?: "Product";
+    id: string;
+    slug: string;
+    name: string;
+    description: string;
+    price: number;
+    inStock: boolean;
+    images: Array<{ __typename?: "Asset"; url: string }>;
+    categories: Array<{ __typename?: "Category"; name: string }>;
+  }>;
+  categories: Array<{ __typename?: "Category"; name: string }>;
+};
+
 export type ProductsQueryVariables = Exact<{
   locale: Locale;
 }>;
@@ -4360,7 +4389,7 @@ export const ProductBySlugDocument = gql`
       name
       description
       price
-      images {
+      images(locales: [en]) {
         url
       }
       inStock
@@ -4422,6 +4451,78 @@ export type ProductBySlugQueryResult = Apollo.QueryResult<
   ProductBySlugQuery,
   ProductBySlugQueryVariables
 >;
+export const ProductsAndCategoriesDocument = gql`
+  query ProductsAndCategories($locale: Locale!) {
+    products(locales: [$locale]) {
+      id
+      slug
+      name
+      description
+      price
+      images(locales: [en]) {
+        url
+      }
+      inStock
+      categories {
+        name
+      }
+    }
+    categories(locales: [$locale]) {
+      name
+    }
+  }
+`;
+
+/**
+ * __useProductsAndCategoriesQuery__
+ *
+ * To run a query within a React component, call `useProductsAndCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsAndCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsAndCategoriesQuery({
+ *   variables: {
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useProductsAndCategoriesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ProductsAndCategoriesQuery,
+    ProductsAndCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    ProductsAndCategoriesQuery,
+    ProductsAndCategoriesQueryVariables
+  >(ProductsAndCategoriesDocument, options);
+}
+export function useProductsAndCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ProductsAndCategoriesQuery,
+    ProductsAndCategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ProductsAndCategoriesQuery,
+    ProductsAndCategoriesQueryVariables
+  >(ProductsAndCategoriesDocument, options);
+}
+export type ProductsAndCategoriesQueryHookResult = ReturnType<
+  typeof useProductsAndCategoriesQuery
+>;
+export type ProductsAndCategoriesLazyQueryHookResult = ReturnType<
+  typeof useProductsAndCategoriesLazyQuery
+>;
+export type ProductsAndCategoriesQueryResult = Apollo.QueryResult<
+  ProductsAndCategoriesQuery,
+  ProductsAndCategoriesQueryVariables
+>;
 export const ProductsDocument = gql`
   query Products($locale: Locale!) {
     products(locales: [$locale]) {
@@ -4430,7 +4531,7 @@ export const ProductsDocument = gql`
       name
       description
       price
-      images {
+      images(locales: [en]) {
         url
       }
       inStock

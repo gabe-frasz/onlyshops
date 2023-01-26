@@ -9,7 +9,11 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["https://lh2.googleusercontent.com", "github.com"],
+    domains: [
+      "https://lh2.googleusercontent.com",
+      "github.com",
+      "media.graphassets.com",
+    ],
   },
 };
 

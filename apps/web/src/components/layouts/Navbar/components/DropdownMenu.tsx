@@ -18,7 +18,7 @@ import { useAuth, useTheme } from "@/hooks";
 export const DropdownMenu = () => {
   const [open, setOpen] = useState(false);
   const { user, logout } = useAuth();
-  const { locales, locale: activeLocale, pathname } = useRouter();
+  const { locales, locale: activeLocale, pathname, query } = useRouter();
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -70,7 +70,14 @@ export const DropdownMenu = () => {
                   className="group rounded-sm px-1 py-2 transition-colors hover:bg-violet-500 hover:text-white hover:outline-none sm:py-0"
                 >
                   <Link
-                    href={pathname}
+                    href={
+                      pathname.includes("[slug]")
+                        ? {
+                            pathname: pathname,
+                            query: { slug: query.slug },
+                          }
+                        : pathname
+                    }
                     locale={locale}
                     className="flex items-center gap-2"
                   >
