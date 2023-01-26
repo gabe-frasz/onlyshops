@@ -5,7 +5,8 @@ import { prisma, stripe } from "@/libs";
 import { authenticate } from "@/plugins";
 
 export async function checkoutRoutes(fastify: FastifyInstance) {
-  // * Create checkout session
+  /** @POST // * Create checkout session */
+  /** @Public */
   fastify.post("/", { onRequest: [authenticate] }, async (req, res) => {
     const parsedBody = createCheckoutSessionSchema.safeParse(req.body);
     if (!parsedBody.success) {
@@ -26,7 +27,7 @@ export async function checkoutRoutes(fastify: FastifyInstance) {
     const session = await stripe.checkout.sessions.create({
       line_items: items.map((item) => ({
         price_data: {
-          currency: "brl",
+          currency: "usd",
           product_data: {
             name: item.name,
             description: item.description,
@@ -37,12 +38,11 @@ export async function checkoutRoutes(fastify: FastifyInstance) {
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: `${process.env.WEB_APP_ORIGIN}/success`,
+      success_url: `${process.env.WEB_APP_ORIGIN}/success?stripe_redirect=true`,
       cancel_url: `${process.env.WEB_APP_ORIGIN}?canceled=true`,
       customer_email: user.email,
-      customer: req.user.sub,
     });
 
-    res.redirect(303, session.url!);
+    res.status(201).send({ url: session.url! });
   });
 }

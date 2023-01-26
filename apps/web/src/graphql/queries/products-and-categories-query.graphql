@@ -1,0 +1,20 @@
+query ProductsAndCategories($locale: Locale!) {
+  products(locales: [$locale]) {
+    id
+    slug
+    name
+    description
+    price
+    images(locales: [en]) {
+      url
+    }
+    inStock
+    categories {
+      name
+    }
+  }
+
+  categories(locales: [$locale]) {
+    name
+  }
+}

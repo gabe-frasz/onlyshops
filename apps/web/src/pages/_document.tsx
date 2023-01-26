@@ -1,7 +1,5 @@
-import { ColorModeScript } from "@chakra-ui/react";
 import { Head, Html, Main, NextScript } from "next/document";
 import Script from "next/script";
-import { theme } from "./_app";
 
 export default function Document() {
   return (
@@ -84,9 +82,7 @@ export default function Document() {
         */}
       </Head>
 
-      <body className="min-h-screen overflow-x-hidden bg-zinc-900 text-zinc-100">
-        <ColorModeScript initialColorMode={theme.initialColorMode} />
-
+      <body className="min-h-screen overflow-x-hidden dark:bg-zinc-900 dark:text-zinc-100">
         <Main />
 
         <NextScript />

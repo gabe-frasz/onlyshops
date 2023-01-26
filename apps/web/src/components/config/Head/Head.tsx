@@ -6,9 +6,12 @@ interface HeadProps {
 }
 
 export const Head = ({ title, description }: HeadProps) => {
+  const fullTitle = `OnlyShops | ${title}`;
+
   return (
     <NextHead>
-      <title>OnlyShops | {title}</title>
+      <title>{fullTitle}</title>
+
       <meta
         name="description"
         content={
