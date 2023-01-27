@@ -3,12 +3,13 @@ import Router from "next/router";
 import { setCookie } from "nookies";
 import { useEffect } from "react";
 
-import { useAuth } from "@/hooks";
+import { useAuth, useLocale } from "@/hooks";
 import { api, getMagicInstance } from "@/libs";
 import { Spinner } from "phosphor-react";
 
 const CallbackPage: NextPage = () => {
   const { setUser } = useAuth();
+  const {isInEnglish} = useLocale();
 
   useEffect(() => {
     async function run() {
@@ -20,7 +21,9 @@ const CallbackPage: NextPage = () => {
         avatarUrl: oauth.userInfo.picture,
       });
 
-      setCookie(undefined, "onlyshops.token", data.token);
+      setCookie(undefined, "onlyshops.token", data.token, {
+        path: "/",
+      });
 
       const { data: userData } = await api.get("/users/me", {
         headers: {
@@ -47,7 +50,7 @@ const CallbackPage: NextPage = () => {
         className="animate-spin text-violet-500"
       />
 
-      <h2 className="text-2xl font-semibold">Loggin user</h2>
+      <h2 className="text-2xl font-semibold">{isInEnglish ? "Loggin user" : "Logando usuário"}</h2>
     </div>
   );
 };
