@@ -1,10 +1,8 @@
 import { NextPage } from "next";
+import { GithubLogo, GoogleLogo } from "phosphor-react";
 
 import { Head, Logo, PageTransition } from "@/components";
 import { useAuth, useLocale } from "@/hooks";
-import { GithubLogo, GoogleLogo } from "phosphor-react";
-
-// TODO: Build UI
 
 const LoginPage: NextPage = () => {
   const { loginWithGithub, loginWithGoogle } = useAuth();
@@ -25,7 +23,7 @@ const LoginPage: NextPage = () => {
           <div className="flex flex-col items-center justify-between gap-4">
             <button
               onClick={() => loginWithGithub()}
-              className="flex items-center gap-2 rounded bg-gray-800 px-3 py-2 text-lg font-semibold"
+              className="flex items-center gap-2 rounded bg-gray-800 px-3 py-2 text-lg font-semibold text-white"
             >
               <GithubLogo size={28} weight="bold" />
               {isInEnglish ? "Enter with GitHub" : "Entrar com GitHub"}
@@ -33,7 +31,7 @@ const LoginPage: NextPage = () => {
 
             <button
               onClick={() => loginWithGoogle()}
-              className="flex items-center gap-2 rounded bg-white px-3 py-2 text-lg font-semibold text-black"
+              className="flex items-center gap-2 rounded border border-black bg-white px-3 py-2 text-lg font-semibold text-black"
             >
               <GoogleLogo size={28} weight="bold" />
               {isInEnglish ? "Enter with Google" : "Entrar com Google"}
