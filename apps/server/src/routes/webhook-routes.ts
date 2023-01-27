@@ -59,7 +59,6 @@ export async function webhookRoutes(fastify: FastifyInstance) {
     res.send();
   });
 
-  // TODO: Implement algolia index
   fastify.post("/algolia/index", async (req, res) => {
     const { products } = await request<ProductsQueryResponse>(
       "https://api-sa-east-1.hygraph.com/v2/clczce4hn4b0a01ukejgw1gz6/master",
@@ -72,6 +71,7 @@ export async function webhookRoutes(fastify: FastifyInstance) {
     const transformedData = products.map((p) => ({
       id: p.id,
       name: p.name,
+      slug: p.slug,
       description: p.description,
       price: p.price,
       image: p.images[0].url,

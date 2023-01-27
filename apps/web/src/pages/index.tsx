@@ -3,12 +3,16 @@ import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
-import { Container, Head, PageTransition, ProductCard } from "@/components";
+import {
+  Container,
+  Head,
+  PageTransition,
+  ProductCard,
+  SearchField,
+} from "@/components";
 import { Locale, useProductsAndCategoriesQuery } from "@/graphql/generated";
 import { useLocale } from "@/hooks";
 import noDataImg from "public/images/no-data.png";
-
-// TODO: Add Algolia search box
 
 const Home: NextPage = () => {
   const { isInEnglish } = useLocale();
@@ -61,7 +65,9 @@ const Home: NextPage = () => {
             ))}
           </select>
 
-          <div className="w-full sm:hidden">searchBar</div>
+          <div className="w-full sm:hidden">
+            <SearchField />
+          </div>
         </section>
       </Container>
 
@@ -88,12 +94,13 @@ const Home: NextPage = () => {
 
       <section ref={sectionAnimationParent}>
         {filteredProducts?.length === 0 ? (
-          <div className="flex h-[calc(100vh-100px)] w-full flex-col items-center justify-center gap-4 font-semibold">
+          <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center gap-4 font-semibold">
             <Image
               src={noDataImg}
               alt="No data illustration"
               className="max-w-[400px] dark:hidden"
             />
+
             <h2 className="text-center text-xl">
               {isInEnglish
                 ? "Didn't find any products U_U"
