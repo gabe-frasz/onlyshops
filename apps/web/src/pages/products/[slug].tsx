@@ -95,7 +95,13 @@ const ProductPage: NextPage = () => {
                   }
                   className="mx-auto w-fit rounded bg-violet-500 px-2 py-1 uppercase text-violet-50 transition-colors hover:bg-violet-600 dark:hover:bg-violet-500/50 sm:mx-0"
                 >
-                  Add to cart
+                  {data?.product?.inStock
+                    ? isInEnglish
+                      ? "Add to cart"
+                      : "Adicionar ao carrinho"
+                    : isInEnglish
+                    ? "Product unavailable"
+                    : "Produto indisponível"}
                 </button>
               </div>
             </div>

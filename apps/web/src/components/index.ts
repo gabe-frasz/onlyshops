@@ -5,5 +5,6 @@ export * from "./layouts/PageTransition/PageTransition";
 export * from "./layouts/ProductCard/ProductCard";
 export * from "./modules/Avatar/Avatar";
 export * from "./modules/Logo/Logo";
+export * from "./modules/SearchField/SearchField";
 export * from "./modules/Separator/Separator";
 export * from "./modules/VisuallyHidden/VisuallyHidden";

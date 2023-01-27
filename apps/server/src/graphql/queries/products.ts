@@ -5,6 +5,7 @@ export const productsQuery = gql`
     products(locales: [$locale]) {
       id
       name
+      slug
       description
       price
       images(locales: [en], first: 1) {
@@ -22,6 +23,7 @@ export type ProductsQueryResponse = {
   products: {
     id: string;
     name: string;
+    slug: string;
     description: string;
     price: number;
     images: {
